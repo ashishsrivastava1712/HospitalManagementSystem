@@ -1,51 +1,59 @@
+
 package com.example.hms.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// Marks this class as a database entity.
+/**
+ * Project Name : Hospital Management System
+ * Module       : Entity
+ * Author       : Ashish Srivastava
+ * Date         : 09-11-2026
+ *
+ * Description:
+ * Represents a patient record in the hospital management system.
+ * Stores personal information and basic medical details.
+ */
+
 @Entity
-
-// Specifies the database table name.
 @Table(name = "patients")
-
-// Generates getters and setters using Lombok.
 @Getter
 @Setter
-
-// Generates a no-argument constructor required by JPA.
 @NoArgsConstructor
-
-// Generates a constructor with all fields.
 @AllArgsConstructor
+@Builder
 public class Patient {
 
-    // Primary key of the patients table.
+    // Generate a unique primary key for every patient
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Stores the patient's name.
-    @Column(nullable = false)
+    // Store the patient's name
+    @Column(nullable = false, length = 100)
     private String name;
 
-    // Stores the patient's age.
+    // Store the patient's age
     @Column(nullable = false)
     private Integer age;
 
-    // Stores the patient's gender.
+    // Store the patient's gender
+    @Column(nullable = false, length = 20)
     private String gender;
 
-    // Stores the patient's disease or medical condition.
+    // Store the patient's disease or medical condition
+    @Column(nullable = false, length = 255)
     private String disease;
 
-    // Stores the patient's address.
+    // Store the patient's residential address
+    @Column(nullable = false, length = 255)
     private String address;
 
-    // Maps Java field phoneNumber to database column phone_number.
-    @Column(name = "phone_number")
+    // Store the patient's contact number
+    @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
 }
