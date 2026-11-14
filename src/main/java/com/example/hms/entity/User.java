@@ -2,51 +2,50 @@ package com.example.hms.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// Marks this class as a database entity.
+/**
+ * Project Name : Hospital Management System
+ * Module       : Entity
+ * Author       : Ashish Srivastava
+ * Date         : 09-11-2026
+ *
+ * Description:
+ * Represents a registered user account in the system.
+ * Stores user details, encrypted password and assigned role.
+ */
+
 @Entity
-
-// Specifies the database table name.
-@Table(
-        name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email")
-        }
-)
-
-// Generates getters and setters using Lombok.
+@Table(name = "users")
 @Getter
 @Setter
-
-// Generates a no-argument constructor required by JPA.
 @NoArgsConstructor
-
-// Generates a constructor with all fields.
 @AllArgsConstructor
+@Builder
 public class User {
 
-    // Primary key of the users table.
+    // Generate a unique primary key for every user
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Stores the user's full name.
-    @Column(nullable = false)
+    // Store the user's full name
+    @Column(nullable = false, length = 100)
     private String name;
 
-    // Stores a unique email address.
-    @Column(nullable = false, unique = true)
+    // Store a unique email address for authentication
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-    // Stores the encoded password.
+    // Store the BCrypt-encoded password
     @Column(nullable = false)
     private String password;
 
-    // Stores the role as text instead of an ordinal number.
+    // Store the user's assigned role as a string in the database
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private Role role;
 }

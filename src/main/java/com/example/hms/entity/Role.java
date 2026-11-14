@@ -1,11 +1,21 @@
 package com.example.hms.entity;
 
-// Enum to define the available user roles.
+/**
+ * Project Name : Hospital Management System
+ * Module       : Entity
+ * Author       : Ashish Srivastava
+ * Date         : 09-11-2026
+ *
+ * Description:
+ * Defines the roles available in the hospital management system.
+ * These roles determine the access permissions of registered users.
+ */
+
 public enum Role {
 
-    // Administrator role for the Hospital Management System.
+    // Administrator with elevated access permissions
     ADMIN,
 
-    // General user role, available for future use.
+    // Normal registered user
     USER
 }
