@@ -2,26 +2,32 @@
 package com.example.hms.service;
 
 import com.example.hms.dto.AuthRequest;
+import com.example.hms.dto.AuthResponse;
 import com.example.hms.entity.Role;
 import com.example.hms.entity.User;
 import com.example.hms.repository.UserRepository;
+import com.example.hms.config.JwtService;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-// Service class containing user registration business logic
+// Service class containing user registration and login business logic
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    // Password encoder for securely hashing user passwords
-    private final BCryptPasswordEncoder passwordEncoder =
-            new BCryptPasswordEncoder();
+    // Constructor injection for required dependencies
+    public AuthService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService) {
 
-    // Constructor injection for UserRepository
-    public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     // Register a new user
@@ -49,5 +55,27 @@ public class AuthService {
         userRepository.save(user);
 
         return "User registered successfully";
+    }
+
+    // Authenticate an existing user and generate JWT
+    public AuthResponse loginUser(AuthRequest request) {
+
+        // Find the user using the provided email
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Invalid email or password"));
+
+        // Verify the entered password against the stored encrypted password
+        if (!passwordEncoder.matches(
+                request.getPassword(), user.getPassword())) {
+
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+
+        // Generate JWT token after successful authentication
+        String token = jwtService.generateToken(user.getEmail());
+
+        // Return the generated token
+        return new AuthResponse(token);
     }
 }
