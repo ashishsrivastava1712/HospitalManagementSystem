@@ -18,7 +18,7 @@ class JwtServiceTest {
     void setUp() {
         jwtService = new JwtService();
 
-        // Set JWT properties without loading the Spring context
+
         ReflectionTestUtils.setField(
                 jwtService,
                 "secret",
