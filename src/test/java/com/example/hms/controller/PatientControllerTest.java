@@ -35,7 +35,7 @@ class PatientControllerTest {
 
     private PatientDto patientDto;
 
-    // Initialize test data
+    // Initialize test datas
     @BeforeEach
     void setUp() {
 
